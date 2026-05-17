@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman Hasil Seleksi - Sistem PPDB Online 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        /* Navbar Styling */
+       .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+      
+.navbar-nav .nav-link {
+    padding: 8px 16px !important;
+    border-radius: 20px; 
+    transition: all 0.3s ease; 
+}
+
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(43, 92, 158, 0.1) !important;
+    color: #2b5c9e !important;
+}
+    
+        .navbar-brand {
+            font-weight: 700;
+            color: #2b5c9e !important;
+        }
+
+        /* Header Page */
+        .page-header {
+            background: linear-gradient(rgba(43, 92, 158, 0.9), rgba(26, 59, 108, 0.95));
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Card Custom */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .card-header-custom {
+            background-color: #2b5c9e;
+            color: white;
+            font-weight: bold;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        .btn-custom-blue {
+            background-color: #2b5c9e !important;
+            color: white !important;
+        }
+        .btn-custom-blue:hover {
+            background-color: #1a3b6c !important;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                SISTEM PPDB ONLINE 2026
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav align-items-center">
+        <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Pendaftaran</a></li>
+        <li class="nav-item"><a class="nav-link" href="pengumuman.html">Pengumuman</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#kontak">Kontak</a></li>
+    </ul>
+</div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <h2 class="fw-bold mb-2">📢 Hasil Seleksi PPDB Online 2026</h2>
+            <p class="lead mb-0">Halaman resmi pengumuman kelulusan calon peserta didik baru SMA & SMK NUSABANGSA 1</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center g-4">
+            
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header-custom card-header p-3 text-center">
+                        🔍 CEK STATUS KELULUSAN ANDA
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="text-muted small text-center">Masukkan Nomor Pendaftaran (Contoh: PPDB2026-1234) yang tertera pada kartu bukti pendaftaran Anda.</p>
+                        
+                        <form id="formCekKelulusan">
+                            <div class="mb-3">
+                                <label for="nomorDaftar" class="form-label fw-bold">Nomor Pendaftaran / ID Siswa</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" class="form-control" id="nomorDaftar" placeholder="Masukkan nomor pendaftaran..." required>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-custom-blue btn-lg fs-6">Periksa Kelulusan</button>
+                            </div>
+                        </form>
+
+                        <div id="hasilPencarian" class="mt-4" style="display: none;">
+                            <hr>
+                            <div id="boxStatus" class="alert text-center p-4 mb-0">
+                                <h4 class="fw-bold mb-2" id="statusJudul"></h4>
+                                <p class="mb-3" id="statusPesan"></p>
+                                <div class="bg-white p-3 rounded text-start shadow-sm border border-light small text-dark mx-auto" style="max-width: 400px;">
+                                    <strong>Detail Calon Siswa:</strong>
+                                    <table class="table table-sm table-borderless mb-0 mt-2">
+                                        <tr><td style="width: 120px;">No. Daftar</td><td>: <span id="resNo" class="fw-bold text-danger"></span></td></tr>
+                                        <tr><td>Nama Lengkap</td><td>: <span id="resNama" class="fw-bold"></span></td></tr>
+                                        <tr><td>Jalur Masuk</td><td>: <span id="resJalur" class="fw-bold"></span></td></tr>
+                                        <tr><td>Kompetensi / Jurusan</td><td>: <span id="resJurusan" class="fw-bold"></span></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="text-center">
+        <div class="container">
+            <p class="text-muted small mb-0">&copy; 2026 Sistem PPDB Online - SMA & SMK NUSABANGSA 1. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById('formCekKelulusan').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nomorDaftarInput = document.getElementById('nomorDaftar').value.trim();
+            const btnCek = this.querySelector('button[type="submit"]');
+            const boxHasil = document.getElementById('hasilPencarian');
+            const boxStatus = document.getElementById('boxStatus');
+            const statusJudul = document.getElementById('statusJudul');
+            const statusPesan = document.getElementById('statusPesan');
+            
+            if(nomorDaftarInput === "") return;
+
+            btnCek.innerText = "Mencari...";
+            btnCek.disabled = true;
+
+            // Memanggil file cek_pengumuman.php dengan parameter nomor pendaftaran
+            fetch(`cek_pengumuman.php?nomor=${encodeURIComponent(nomorDaftarInput)}`)
+            .then(response => response.json())
+            .then(res => {
+                btnCek.innerText = "Periksa Kelulusan";
+                btnCek.disabled = false;
+                
+                // Munculkan container hasil pencarian
+                boxHasil.style.display = 'block';
+
+                // GANTI BLOK LOGIKA PENGECEKAN STATUS DENGAN INI:
+// Pastikan boxStatus dibersihkan dulu class lamanya
+boxStatus.className = "alert p-4 mb-4";
+// ISI DARI CALLBACK .then(res => { ... }) DI PENGUMUMAN.HTML
+if (res.status === "sukses") {
+    // Tampilkan data profil siswa ke tabel detail bawah
+    document.getElementById('resNo').innerText = res.data.nomor_daftar;
+    document.getElementById('resNama').innerText = res.data.nama_lengkap;
+    document.getElementById('resJalur').innerText = res.data.jalur;
+    document.getElementById('resJurusan').innerText = res.data.jurusan;
+
+    // Bersihkan dulu semua class alert bawaan agar warna tidak tabrakan
+    boxStatus.className = "alert p-4 mb-0";
+
+    // Ambil data status dari database
+    const kelulusan = res.data.status_kelulusan;
+    const berkas = res.data.status_berkas;
+
+    // ==========================================
+    // LOGIKA PERUTALAN STATUS (JANGAN ADA YANG TERLEWAT)
+    // ==========================================
+    
+    if (kelulusan === "LULUS") {
+        boxStatus.classList.add('alert-success');
+        statusJudul.innerHTML = "🎉 SELAMAT! ANDA DINYATAKAN LULUS SELEKSI";
+        statusPesan.innerHTML = `Selamat kepada <strong>${res.data.nama_lengkap}</strong>! Anda dinyatakan <strong>LULUS</strong> pada program keahlian <strong>${res.data.jurusan}</strong> di SMK & SMA NUSABANGSA 2026. Silakan lakukan langkah daftar ulang berikutnya.`;
+    } 
+    else if (kelulusan === "TIDAK LULUS") {
+        boxStatus.classList.add('alert-danger');
+        statusJudul.innerHTML = "❌ MOHON MAAF, ANDA TIDAK LULUS SELEKSI";
+        statusPesan.innerHTML = `Terima kasih telah berpartisipasi dalam PPDB Online 2026. Mohon maaf, berdasarkan hasil keputusan perangkingan seleksi nilai/zonasi, Anda dinyatakan <strong>TIDAK LULUS</strong>. Tetap semangat!`;
+    } 
+    else if (berkas === "DIVERIFIKASI") {
+        boxStatus.classList.add('alert-info'); // Warna biru info cerah
+        statusJudul.innerHTML = "✅ BERKAS TERVERIFIKASI (MENUNGGU SELEKSI)";
+        statusPesan.innerHTML = `Halo <strong>${res.data.nama_lengkap}</strong>, berkas pendaftaran Anda telah diperiksa dan dinyatakan <strong>VALID / SAH</strong>. Silakan tunggu pengumuman kelulusan final seleksi akademik/zonasi oleh admin.`;
+    } 
+    else if (berkas === "DITOLAK") {
+        boxStatus.classList.add('alert-danger');
+        statusJudul.innerHTML = "❌ BERKAS DITOLAK / TIDAK VALID";
+        statusPesan.innerHTML = `Mohon maaf, berkas pendaftaran yang Anda unggah dinyatakan <strong>TIDAK VALID</strong> oleh panitia. Silakan periksa kembali berkas pendaftaran Anda atau hubungi admin.`;
+    } 
+    else {
+        // Jika status berkas masih "MENUNGGU" dan kelulusan masih "Belum Diseleksi"
+        boxStatus.classList.add('alert-warning');
+        statusJudul.innerHTML = "⏳ BERKAS SEDANG DIVERIFIKASI";
+        statusPesan.innerHTML = `Halo, data pendaftaran Anda telah terekam dengan baik. Saat ini berkas Anda masih berada dalam tahap <strong>Antrean Validasi</strong> oleh panitia PPDB.`;
+    }
+
+} else {
+    // Jika nomor pendaftaran tidak ditemukan
+    boxStatus.className = "alert alert-secondary text-center p-4 mb-0";
+    statusJudul.innerHTML = "🔍 DATA TIDAK DITEMUKAN";
+    statusPesan.innerHTML = `⚠️ ${res.pesan}`;
+    
+    // Kosongkan tabel detail calon siswa
+    document.getElementById('resNo').innerText = "-";
+    document.getElementById('resNama').innerText = "-";
+    document.getElementById('resJalur').innerText = "-";
+    document.getElementById('resJurusan').innerText = "-";
+}
+                })
+            .catch(error => {
+                console.error('Error:', error);
+                btnCek.innerText = "Periksa Kelulusan";
+                btnCek.disabled = false;
+                alert("Terjadi kesalahan koneksi sistem backend saat memeriksa pengumuman!");
+            });
+        });
+    </script>
+</body>
+</html>

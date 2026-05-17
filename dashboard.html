@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem PPDB Online 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; }
+        .card { border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .card-header { background-color: #0d6efd; color: white; font-weight: bold; border-radius: 10px 10px 0 0 !important; }
+        .auth-container { max-width: 450px; margin: 60px auto; }
+        .step-badge { width: 30px; height: 30px; background-color: #6c757d; color: white; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; margin-right: 10px; }
+        .step-active { background-color: #0d6efd; }
+        .step-success { background-color: #198754; }
+
+      .navbar {
+            background-color: #212529 !important; /* Ini yang bikin background navbarnya jadi hitam */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #ffffff !important; /* Teks logo jadi putih biar kelihatan di latar hitam */
+        }
+        
+        /* Menu Navbar berbentuk Pill */
+        .nav-link {
+            font-weight: 500;
+            color: #adb5bd !important; /* Teks menu jadi abu-abu terang */
+            padding: 8px 18px !important;
+            border-radius: 25px;
+            margin: 0 4px;
+            transition: all 0.3s;
+        }
+        .nav-link:hover {
+            color: #ffffff !important; /* Teks jadi putih pas disentuh mouse */
+            background-color: rgba(255, 255, 255, 0.1); /* Background samar pas disentuh mouse */
+        }
+
+@media print {
+    /* Sembunyikan semua elemen yang tidak perlu dicetak */
+    nav, .col-md-4, .btn, hr, .text-muted, h6 {
+        display: none !important;
+    }
+    /* Atur agar area konten sukses memenuhi halaman */
+    body {
+        background-color: #fff !important;
+    }
+    .col-md-8 {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .card-header {
+        background-color: #198754 !important;
+        color: white !important;
+        text-align: center;
+    }
+}
+    </style>
+</head>
+<body>
+
+ <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                PPDB ONLINE SMK & SMA NUSABANGSA 2026
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Pendaftaran</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pengumuman.html">Pengumuman</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#kontak">Kontak</a></li>
+                    <li class="nav-item ms-2">
+                       <button class="btn btn-outline-primary px-3 btn-sm rounded-pill" onclick="pindahPanel('panel-login')">
+                       <i class="fas fa-sign-in-alt me-1"></i> Login
+                
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container mt-4">
+
+    <div id="panel-register" class="auth-container">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-center"> REGISTRASI AKUN CALON SISWA </div>
+            <div class="card-body">
+                <p class="text-muted small text-center">Buat akun terlebih dahulu menggunakan Email dan Password Anda untuk mulai mendaftar.</p>
+                <form id="formRegister">
+                    <div class="mb-3">
+                        <label for="regEmail" class="form-label">Alamat Email</label>
+                        <input type="email" class="form-control" id="regEmail" required placeholder="nama@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="regPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="regPassword" required placeholder="Buat password minimal 6 karakter">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Daftar Akun Baru</button>
+                        <hr class="my-2">
+                        <p class="text-center small mb-0">Sudah punya akun? <a href="#" onclick="pindahPanel('panel-login')">Login di sini</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="panel-login" class="auth-container" style="display: none;">
+        <div class="card border-success">
+            <div class="card-header bg-success text-center">LOGIN AKUN PPDB</div>
+            <div class="card-body">
+                <div id="alert-reg-sukses" class="alert alert-success small text-center" style="display: none;">
+                    Akun berhasil dibuat! Silakan masuk menggunakan email & password Anda.
+                </div>
+                <form id="formLogin">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">Masuk Aplikasi</button>
+                        <hr class="my-2">
+                        <p class="text-center small mb-0">Belum punya akun? <a href="#" onclick="pindahPanel('panel-register')">Registrasi Sekarang</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="panel-dashboard" style="display: none;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-dark">ℹ️ Status Pendaftaran</div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Akun Login:</strong></p>
+                        <span class="badge bg-secondary mb-3" id="user-aktif">email@pendaftar.com</span>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="step-badge step-success" id="step1-ico">✓</div>
+                            <span class="small" id="step1-txt">Registrasi & Login Akun</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="step-badge" id="step2-ico">2</div>
+                            <span class="small" id="step2-txt">Mengisi Form & Berkas</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="step-badge" id="step3-ico">3</div>
+                            <span class="small" id="step3-txt">Mencetak Bukti Daftar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-warning" id="box-cetak" style="display: none;">
+                    <div class="card-header bg-warning text-dark font-weight-bold">🖨️ Cetak Dokumen</div>
+                    <div class="card-body text-center">
+                        <p class="small text-muted">Formulir Anda sudah lengkap! Silakan cetak bukti pendaftaran Anda di bawah ini.</p>
+                        <button class="btn btn-warning w-100 fw-bold mb-2" onclick="aksiCetak()">Cetak Bukti Pendaftaran</button>
+                        <div class="alert alert-info py-2 small text-start mt-2 mb-0">
+                            <strong>📌 Langkah Terakhir:</strong> Simpan bukti ini dan tunggu pengumuman hasil seleksi pada tanggal yang ditentukan panitia.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div id="konten-formulir">
+                    <div class="card">
+                        <div class="card-header">Lengkapi Biodata Calon Siswa</div>
+                        <div class="card-body">
+                            <form id="formIsiData">
+                                <h5 class="text-primary mb-3">1. Biodata Diri</h5>
+                                <div class="mb-3">
+                                    <label for="namaLengkap" class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="namaLengkap" required placeholder="Sesuai Ijazah">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="tempatLahir" class="form-label">Tempat Lahir</label>
+                                        <input type="text" class="form-control" id="tempatLahir" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="tanggalLahir" class="form-label">Tanggal Lahir</label>
+                                        <input type="date" class="form-control" id="tanggalLahir" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="noHP" class="form-label">No. WhatsApp Aktif</label>
+                                    <input type="tel" class="form-control" id="noHP" required placeholder="081234xxx">
+                                </div>
+
+                                <hr class="my-4">
+                                <h5 class="text-primary mb-3">2. Pilihan Jalur Pendaftaran & Jurusan</h5>
+                                <div class="mb-3">
+                                    <label for="jalurDaftar" class="form-label fw-bold">Pilih Jalur Pendaftaran</label>
+                                    <select class="form-select" id="jalurDaftar" required>
+                                        <option value="" disabled selected>-- Pilih Jalur --</option>
+                                        <option value="Zonasi">Jalur Zonasi (Jarak Rumah)</option>
+                                        <option value="Afirmasi">Jalur Afirmasi (Keluarga Tidak Mampu)</option>
+                                        <option value="Prestasi">Jalur Prestasi (Akademik / Non-Akademik)</option>
+                                        <option value="Perpindahan">Jalur Perpindahan Tugas Orang Tua</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Pilih Program Keahlian / Jurusan</label>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="jurusan" id="mipa" value="MIPA" required><label class="form-check-label" for="mipa">MIPA</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="jurusan" id="ips" value="IPS"><label class="form-check-label" for="ips">IPS</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="jurusan" id="rpl" value="RPL"><label class="form-check-label" for="rpl">RPL (Rekayasa Perangkat Lunak)</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="jurusan" id="tkj" value="TKJ"><label class="form-check-label" for="tkj">TKJ (Teknik Komputer dan Jaringan)</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="jurusan" id="mm" value="MM"><label class="form-check-label" for="mm">MM (Multimedia)</label></div>
+                                </div>
+
+                               <hr class="my-4">
+                                <h5 class="text-primary mb-3">3. Upload Berkas & Pembayaran</h5>
+                                <div class="mb-3">
+                                    <label for="fileIjazah" class="form-label">Ijazah / SKL (PDF/JPG)</label>
+                                    <input class="form-control" type="file" id="fileIjazah" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fileKK" class="form-label">Kartu Keluarga (PDF/JPG)</label>
+                                    <input class="form-control" type="file" id="fileKK" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fileAK" class="form-label">Akta Kelahiran (PDF/JPG)</label>
+                                    <input class="form-control" type="file" id="fileAK" required>
+                                </div>
+
+                                <div class="mb-4 p-3 bg-light border border-info rounded">
+                                    <h6 class="text-info fw-bold mb-2">💳 Pembayaran Pendaftaran (Rp 150.000)</h6>
+                                    <p class="small text-muted mb-2">Silakan klik tombol di bawah untuk mendapatkan Nomor Virtual Account (VA).</p>
+                                    
+                                    <button type="button" class="btn btn-sm btn-info text-white mb-3" id="btnGenerateVA" onclick="generateVA()">
+                                        Generate Kode VA Pembayaran
+                                    </button>
+                                    
+                                    <div id="vaContainer" style="display: none;" class="p-3 mb-3 border border-primary rounded bg-white">
+                                        <div class="small text-muted">Bank Tujuan: <strong>Bank BNI</strong></div>
+                                        <div class="small text-muted">Nomor Virtual Account Anda:</div>
+                                        <h4 class="text-primary font-monospace fw-bold mb-1" id="vaNumber"></h4>
+                                        <div class="small text-danger" style="font-size: 12px;">* Berlaku selama 24 jam. Segera lakukan pembayaran.</div>
+                                    </div>
+
+                                    <label for="filePembayaran" class="form-label fw-bold text-success mt-2">📄 Upload Bukti Pembayaran (JPG/PNG)</label>
+                                    <input class="form-control" type="file" id="filePembayaran" required>
+                                    <div class="form-text small">Unggah struk atau screenshot bukti transfer ke nomor VA di atas.</div>
+                                </div>
+
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg">Simpan & Kirim Formulir</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="konten-sukses" style="display: none;">
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-center">DATA BERHASIL DIKIRIM!</div>
+                        <div class="card-body text-center p-4">
+                            <h4>Selamat, <span id="view-nama" class="text-primary"></span>!</h4>
+                            <p class="lead">Formulir pendaftaran Anda telah berhasil disimpan di dalam sistem kami.</p>
+                            
+                            <div class="bg-light p-3 rounded border text-start my-4">
+                                <h6>Ringkasan Pendaftaran Anda:</h6>
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tr><td style="width: 140px;">Nomor Daftar</td><td>: <strong id="view-id" class="text-danger"></strong></td></tr>
+                                    <tr><td>Jalur Pilih</td><td>: <span id="view-jalur"></span></td></tr>
+                                    <tr><td>Jurusan</td><td>: <span id="view-jurusan"></span></td></tr>
+                                   <tr>
+                                   <tr>
+    <td>Status Berkas</td>
+    <td>: <span id="view-status-berkas" class="badge bg-warning text-dark">Menunggu Seleksi / Verifikasi</span></td>
+</tr>
+                                </table>
+                            </div>
+                            <p class="text-muted">Langkah selanjutnya adalah mengunduh bukti pendaftaran pada tombol kuning di panel sebelah kiri Anda.</p>
+                            <button class="btn btn-outline-danger mt-2" onclick="logout()">Keluar / Logout Akun</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Database objek lokal sementara untuk menyimpan data simulasi alur
+    let dataAkun = {};
+    let dataPendaftar = {};
+
+    // Fungsi utilitas pindah panel otentikasi
+    function pindahPanel(idPanel) {
+        document.getElementById('panel-register').style.display = 'none';
+        document.getElementById('panel-login').style.display = 'none';
+        document.getElementById(idPanel).style.display = 'block';
+    }
+
+    // ALUR 1: Proses Submit Pendaftaran Akun Baru
+    // ALUR 1: PROSES REGISTER KE DATABASE
+    document.getElementById('formRegister').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Ambil isi inputan
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        
+        // Ubah teks tombol jadi loading biar interaktif
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const btnTeksAsli = btnSubmit.innerText;
+        btnSubmit.innerText = "Mendaftarkan...";
+        btnSubmit.disabled = true;
+
+        // Mengirim data ke register.php
+        fetch('register.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            btnSubmit.innerText = btnTeksAsli;
+            btnSubmit.disabled = false;
+
+            if(data.status === "sukses") {
+                // Simpan di variabel lokal sementara untuk login otomatis di page ini
+                dataAkun = { email: email, password: password }; 
+                
+                // Pindah panel dan tampilkan pesan sukses dari database
+                pindahPanel('panel-login');
+                const alertSukses = document.getElementById('alert-reg-sukses');
+                alertSukses.style.display = 'block';
+                alertSukses.innerText = data.pesan;
+            } else {
+                // Muncul alert kalau email sudah terdaftar
+                alert("⚠️ " + data.pesan);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btnSubmit.innerText = btnTeksAsli;
+            btnSubmit.disabled = false;
+            alert("Terjadi kesalahan sistem!");
+        });
+    });
+
+ // ========================================================
+// ALUR 2: SINKRONISASI LOGIN NAVBAR KE DATABASE & ROLE ADMIN
+// ========================================================
+document.getElementById('formLogin').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const emailIn = document.getElementById('loginEmail').value.trim();
+    const passIn = document.getElementById('loginPassword').value;
+
+    const btnLogin = this.querySelector('button[type="submit"]');
+    const btnTeksAsli = btnLogin.innerText;
+    btnLogin.innerText = "Memverifikasi...";
+    btnLogin.disabled = true;
+
+    // Kirim data login ke login.php menggunakan Fetch API
+    fetch('login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailIn, password: passIn })
+    })
+    .then(response => response.json())
+    .then(data => {
+        btnLogin.innerText = btnTeksAsli;
+        btnLogin.disabled = false;
+
+        if(data.status === "sukses") {
+            // JIKA YANG LOGIN ADALAH ADMIN
+            if(data.role === "Admin") {
+                alert("✨ Login Berhasil! Selamat datang Admin PPDB.");
+                window.location.href = "admin.html"; // Alihkan langsung ke dashboard admin
+                return;
+            }
+
+            // JIKA YANG LOGIN ADALAH SISWA BIASA
+            alert("✨ Login Berhasil! Mengalihkan ke Dashboard Pendaftaran.");
+            document.getElementById('user-aktif').innerText = data.email;
+            
+            // Sembunyikan panel login, tampilkan panel dashboard utama
+            document.getElementById('panel-login').style.display = 'none';
+            document.getElementById('panel-dashboard').style.display = 'block';
+
+            // Cek: Apakah siswa ini sudah pernah mengisi form pendaftaran sebelumnya?
+           // Cek: Apakah siswa ini sudah pernah mengisi form pendaftaran sebelumnya?
+if (data.sudah_daftar === true && data.data_daftar !== null) 
+{
+    dataPendaftar = {
+        id: data.data_daftar.nomor_daftar,
+        nama: data.data_daftar.nama_lengkap,
+        jalur: data.data_daftar.jalur,
+        jurusan: data.data_daftar.jurusan,
+        status_verifikasi: data.data_daftar.status_verifikasi // Pastikan login.php mengirimkan field ini
+    };
+
+    // Isi ringkasan bukti pendaftaran bawaan halaman
+    document.getElementById('view-nama').innerText = dataPendaftar.nama;
+    document.getElementById('view-id').innerText = dataPendaftar.id;
+    document.getElementById('view-jalur').innerText = dataPendaftar.jalur;
+    document.getElementById('view-jurusan').innerText = dataPendaftar.jurusan;
+
+    // Ambil elemen status di tabel ringkasan & badge alur kiri
+   // Ambil status khusus BERKAS
+const stsBerkas = data.data_daftar.status_verifikasi; 
+const badgeStatusTabel = document.getElementById('view-status-berkas');
+const step3Ico = document.getElementById('step3-ico');
+
+if (stsBerkas === "DIVERIFIKASI") {
+    if(badgeStatusTabel) {
+        badgeStatusTabel.className = "badge bg-success";
+        badgeStatusTabel.innerText = "Berkas Diverifikasi (Valid)";
+    }
+    if(step3Ico) {
+        step3Ico.className = "step-badge step-success";
+        step3Ico.innerText = "✓";
+    }
+} else if (stsBerkas === "DITOLAK") {
+    if(badgeStatusTabel) {
+        badgeStatusTabel.className = "badge bg-danger";
+        badgeStatusTabel.innerText = "Berkas Ditolak / Tidak Sah";
+    }
+    if(step3Ico) {
+        step3Ico.className = "step-badge bg-danger";
+        step3Ico.innerText = "✕";
+    }
+} else {
+    if(badgeStatusTabel) {
+        badgeStatusTabel.className = "badge bg-warning text-dark";
+        badgeStatusTabel.innerText = "Menunggu Verifikasi Berkas";
+    }
+    if(step3Ico) {
+        step3Ico.className = "step-badge step-active";
+        step3Ico.innerText = "3";
+    }
+}
+    // Ubah status badge indikator alur nomor 2 di kiri menjadi sukses (Centang) karena data form sudah masuk
+    document.getElementById('step2-ico').className = "step-badge step-success";
+    document.getElementById('step2-ico').innerText = "✓";
+
+    // Langsung kunci halaman: sembunyikan form isi data, tampilkan ringkasan sukses
+    document.getElementById('konten-formulir').style.display = 'none';
+    document.getElementById('konten-sukses').style.display = 'block';
+    document.getElementById('box-cetak').style.display = 'block';
+    
+} else {
+                // Jika belum pernah isi form, arahkan untuk mengisi biodata (Step 2 aktif)
+                document.getElementById('step2-ico').className = "step-badge step-active";
+                document.getElementById('konten-formulir').style.display = 'block';
+                document.getElementById('konten-sukses').style.display = 'none';
+                document.getElementById('box-cetak').style.display = 'none';
+            }
+        } else {
+            // Jika password salah atau email tidak terdaftar
+            alert("⚠️ " + data.pesan);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        btnLogin.innerText = btnTeksAsli;
+        btnLogin.disabled = false;
+        alert("Terjadi gangguan sistem saat memproses login!");
+    });
+});
+
+    // ========================================================
+    // ALUR 3 & 4: KIRIM FORMULIR BERKAS KE DB (DIPERBARUI)
+    // ========================================================
+    document.getElementById('formIsiData').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Ubah teks tombol menjadi loading saat mengirim data
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const btnTeksAsli = btnSubmit.innerText;
+        btnSubmit.innerText = "Menyimpan & Mengunggah Berkas...";
+        btnSubmit.disabled = true;
+
+        // Ambil email user yang sedang login aktif dari sidebar badge
+        const emailAktif = document.getElementById('user-aktif').innerText;
+
+        // Menggunakan FormData karena formulir melibatkan upload berkas file fisik
+        const formData = new FormData();
+        
+        // Memasukkan data teks
+        formData.append('emailActive', emailAktif);
+        formData.append('namaLengkap', document.getElementById('namaLengkap').value);
+        formData.append('tempatLahir', document.getElementById('tempatLahir').value);
+        formData.append('tanggalLahir', document.getElementById('tanggalLahir').value);
+        formData.append('noHP', document.getElementById('noHP').value);
+        formData.append('jalurDaftar', document.getElementById('jalurDaftar').value);
+        formData.append('jurusan', document.querySelector('input[name="jurusan"]:checked').value);
+        
+        // Memasukkan berkas file fisik
+        formData.append('fileIjazah', document.getElementById('fileIjazah').files[0]);
+        formData.append('fileKK', document.getElementById('fileKK').files[0]);
+        formData.append('fileAK', document.getElementById('fileAK').files[0]);
+        formData.append('filePembayaran', document.getElementById('filePembayaran').files[0]);
+
+        // Mengirimkan data via fetch menuju simpan_pendaftaran.php
+        fetch('simpan_pendaftaran.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            btnSubmit.innerText = btnTeksAsli;
+            btnSubmit.disabled = false;
+
+            if (res.status === "sukses") {
+                dataPendaftar = {
+                    id: res.data.id,
+                    nama: res.data.nama,
+                    jalur: res.data.jalur,
+                    jurusan: res.data.jurusan
+                };
+
+                // Update isi teks visual ringkasan data sukses halaman
+                document.getElementById('view-nama').innerText = dataPendaftar.nama;
+                document.getElementById('view-id').innerText = dataPendaftar.id;
+                document.getElementById('view-jalur').innerText = dataPendaftar.jalur;
+                document.getElementById('view-jurusan').innerText = dataPendaftar.jurusan;
+
+                // Ubah status indikator langkah pendaftaran di sebelah kiri
+                document.getElementById('step2-ico').className = "step-badge step-success";
+                document.getElementById('step2-ico').innerText = "✓";
+                document.getElementById('step3-ico').className = "step-badge step-active";
+
+                // Pindah panel form ke info sukses
+                document.getElementById('konten-formulir').style.display = 'none';
+                document.getElementById('konten-sukses').style.display = 'block';
+                document.getElementById('box-cetak').style.display = 'block';
+            } else {
+                alert("⚠️ " + res.pesan);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btnSubmit.innerText = btnTeksAsli;
+            btnSubmit.disabled = false;
+            alert("Terjadi kesalahan sistem saat mengirim data pendaftaran!");
+        });
+    });
+
+    
+    // ALUR 5: Aksi Tombol Cetak Bukti Pendaftaran
+    function aksiCetak() {
+    // 1. Validasi data pendaftar
+    if (!dataPendaftar.id) {
+        alert("Data pendaftaran tidak ditemukan!");
+        return;
+    }
+
+    // 2. Ambil elemen HTML ringkasan sukses yang mau dijadikan PDF
+    // Kita buat clone elemennya supaya tombol "Keluar / Logout" tidak ikut terdownload
+    const elemenAsli = document.getElementById('konten-sukses').querySelector('.card');
+    const elemenClone = elemenAsli.cloneNode(true);
+    
+    // Hapus tombol logout yang ada di dalam berkas klon agar PDF-nya bersih
+    const tombolLogout = elemenClone.querySelector('button');
+    if(tombolLogout) tombolLogout.remove();
+
+    // 3. Atur konfigurasi file PDF-nya
+    const opsi = {
+        margin:       10,
+        filename:     'Bukti_Pendaftaran_' + dataPendaftar.id + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 }, // Bikin teksnya tajam dan gak pecah
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // 4. Proses konversi HTML ke PDF dan langsung otomatis download
+    html2pdf().set(opsi).from(elemenClone).save().then(() => {
+        // 5. Setelah berhasil download, selesaikan indikator alur di panel kiri
+        document.getElementById('step3-ico').className = "step-badge step-success";
+        document.getElementById('step3-ico').innerText = "✓";
+    });
+}
+
+// Fungsi untuk Generate Virtual Account (VA)
+    function generateVA() {
+        // 1. Ambil nilai No. HP dari form Biodata Diri di atas
+        const noHp = document.getElementById('noHP').value;
+
+        // 2. Cek apakah No. HP kosong
+        if (noHp.trim() === "") {
+            alert("Silakan isi 'No. WhatsApp Aktif' di bagian 1 (Biodata Diri) terlebih dahulu untuk membuat VA!");
+            document.getElementById('noHP').focus(); // Otomatis mengarahkan kursor ke input No HP
+            return; // Menghentikan proses ke bawah kalau kosong
+        }
+
+        // 3. Bersihkan No HP dari karakter selain angka (misal ada yang ngetik pakai spasi/strip)
+        const cleanNoHp = noHp.replace(/\D/g, '');
+
+        // 4. Buat Nomor VA (Kode Bank 8806 + Nomor HP Pendaftar)
+        const kodeBank = "8806";
+        const vaNum = kodeBank + cleanNoHp;
+
+        // 5. Tampilkan ke layar
+        document.getElementById('vaNumber').innerText = vaNum;
+        document.getElementById('vaContainer').style.display = 'block';
+        document.getElementById('btnGenerateVA').style.display = 'none';
+    }
+
+    // Fungsi Logout Skenario 2: Reset tampilan panel ke Login
+function logout() {
+    if (confirm("Apakah Anda yakin ingin keluar?")) {
+        // Kosongkan data lokal sementara
+        dataAkun = {};
+        dataPendaftar = {};
+
+        // Sembunyikan dashboard, tampilkan panel login
+        document.getElementById('panel-dashboard').style.display = 'none';
+        document.getElementById('panel-login').style.display = 'block';
+
+        // Reset form login biar bersih kembali
+        document.getElementById('formLogin').reset();
+        
+        // Sembunyikan alert sukses registrasi lama jika ada
+        document.getElementById('alert-reg-sukses').style.display = 'none';
+    }
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</body>
+</html>
