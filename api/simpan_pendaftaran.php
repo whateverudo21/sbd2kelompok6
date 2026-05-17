@@ -15,28 +15,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Generate Nomor Pendaftaran otomatis secara backend untuk keamanan
     $random_id = "PPDB2026-" . rand(1000, 9000);
 
-    // 2. Proses Upload Berkas
-    $target_dir = "uploads/";
-    
-    // Fungsi pembantu untuk memproses upload file
-    function uploadFile($file_key, $target_dir, $prefix) {
+    // 2. Proses Konversi File Fisik ke Base64 (Solusi untuk penyimpanan Read-Only Vercel)
+    function uploadFileKeBase64($file_key) {
         if (!isset($_FILES[$file_key]) || $_FILES[$file_key]['error'] !== UPLOAD_ERR_OK) {
             return null;
         }
-        $ext = pathinfo($_FILES[$file_key]['name'], PATHINFO_EXTENSION);
-        $new_filename = $prefix . "_" . time() . "_" . rand(100, 999) . "." . $ext;
-        $target_file = $target_dir . $new_filename;
+        $file_path = $_FILES[$file_key]['tmp_name'];
+        $file_type = $_FILES[$file_key]['type'];
+        $file_data = file_get_contents($file_path);
         
-        if (move_uploaded_file($_FILES[$file_key]['tmp_name'], $target_file)) {
-            return $new_filename;
-        }
-        return null;
+        // Menghasilkan string teks panjang data gambar/pdf
+        return 'data:' . $file_type . ';base64,' . base64_encode($file_data);
     }
 
-    $file_ijazah = uploadFile('fileIjazah', $target_dir, 'ijazah');
-    $file_kk = uploadFile('fileKK', $target_dir, 'kk');
-    $file_akta = uploadFile('fileAK', $target_dir, 'akta');
-    $file_pembayaran = uploadFile('filePembayaran', $target_dir, 'bayar');
+    // Mengubah file fisik menjadi teks teks panjang untuk disimpan langsung di MySQL Clever Cloud
+    $file_ijazah = uploadFileKeBase64('fileIjazah');
+    $file_kk = uploadFileKeBase64('fileKK');
+    $file_akta = uploadFileKeBase64('fileAK');
+    $file_pembayaran = uploadFileKeBase64('filePembayaran');
 
     // Validasi dasar: pastikan semua data wajib terisi
     if (empty($email) || empty($nama) || empty($jalur) || empty($jurusan) || !$file_ijazah || !$file_kk || !$file_akta || !$file_pembayaran) {
@@ -44,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // 3. Simpan ke Database (Menambahkan kolom 'email')
-    $sql = "INSERT INTO pendaftar (nomor_daftar, email, nama_lengkap, tempat_lahir, tanggal_lahir, no_hp, jalur, jurusan, file_ijazah, file_kk, file_akta, file_pembayaran, status_verifikasi) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu Seleksi / Verifikasi')";
+    // 3. Simpan ke Database (Kolom file akan diisi string Base64)
+    $sql = "INSERT INTO pendaftar (nomor_daftar, email, nama_lengkap, tempat_lahir, tanggal_lahir, no_hp, jalur, jurusan, file_ijazah, file_kk, file_akta, file_pembayaran, status_verifikasi, status_kelulusan) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'MENUNGGU', 'MENUNGGU')";
             
     $stmt = $koneksi->prepare($sql);
     
