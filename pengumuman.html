@@ -18,19 +18,17 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-      
-.navbar-nav .nav-link {
-    padding: 8px 16px !important;
-    border-radius: 20px; 
-    transition: all 0.3s ease; 
-}
+        .navbar-nav .nav-link {
+            padding: 8px 16px !important;
+            border-radius: 20px; 
+            transition: all 0.3s ease; 
+        }
 
-
-.navbar-nav .nav-link:hover {
-    background-color: rgba(43, 92, 158, 0.1) !important;
-    color: #2b5c9e !important;
-}
-    
+        .navbar-nav .nav-link:hover {
+            background-color: rgba(43, 92, 158, 0.1) !important;
+            color: #2b5c9e !important;
+        }
+        
         .navbar-brand {
             font-weight: 700;
             color: #2b5c9e !important;
@@ -84,14 +82,14 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-    <ul class="navbar-nav align-items-center">
-        <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
-        <li class="nav-item"><a class="nav-link" href="dashboard.html">Pendaftaran</a></li>
-        <li class="nav-item"><a class="nav-link" href="pengumuman.html">Pengumuman</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.html#kontak">Kontak</a></li>
-    </ul>
-</div>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Pendaftaran</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="pengumuman.html">Pengumuman</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#kontak">Kontak</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -174,85 +172,12 @@
             btnCek.innerText = "Mencari...";
             btnCek.disabled = true;
 
-            // Memanggil file cek_pengumuman.php dengan parameter nomor pendaftaran
-            fetch(`cek_pengumuman.php?nomor=${encodeURIComponent(nomorDaftarInput)}`)
+            // Perbaikan: Menyesuaikan parameter query (?nomor_pendaftaran=) dan mengarahkannya ke folder api/
+            fetch(`api/cek_pengumuman.php?nomor_pendaftaran=${encodeURIComponent(nomorDaftarInput)}`)
             .then(response => response.json())
             .then(res => {
                 btnCek.innerText = "Periksa Kelulusan";
                 btnCek.disabled = false;
                 
-                // Munculkan container hasil pencarian
                 boxHasil.style.display = 'block';
-
-                // GANTI BLOK LOGIKA PENGECEKAN STATUS DENGAN INI:
-// Pastikan boxStatus dibersihkan dulu class lamanya
-boxStatus.className = "alert p-4 mb-4";
-// ISI DARI CALLBACK .then(res => { ... }) DI PENGUMUMAN.HTML
-if (res.status === "sukses") {
-    // Tampilkan data profil siswa ke tabel detail bawah
-    document.getElementById('resNo').innerText = res.data.nomor_daftar;
-    document.getElementById('resNama').innerText = res.data.nama_lengkap;
-    document.getElementById('resJalur').innerText = res.data.jalur;
-    document.getElementById('resJurusan').innerText = res.data.jurusan;
-
-    // Bersihkan dulu semua class alert bawaan agar warna tidak tabrakan
-    boxStatus.className = "alert p-4 mb-0";
-
-    // Ambil data status dari database
-    const kelulusan = res.data.status_kelulusan;
-    const berkas = res.data.status_berkas;
-
-    // ==========================================
-    // LOGIKA PERUTALAN STATUS (JANGAN ADA YANG TERLEWAT)
-    // ==========================================
-    
-    if (kelulusan === "LULUS") {
-        boxStatus.classList.add('alert-success');
-        statusJudul.innerHTML = "🎉 SELAMAT! ANDA DINYATAKAN LULUS SELEKSI";
-        statusPesan.innerHTML = `Selamat kepada <strong>${res.data.nama_lengkap}</strong>! Anda dinyatakan <strong>LULUS</strong> pada program keahlian <strong>${res.data.jurusan}</strong> di SMK & SMA NUSABANGSA 2026. Silakan lakukan langkah daftar ulang berikutnya.`;
-    } 
-    else if (kelulusan === "TIDAK LULUS") {
-        boxStatus.classList.add('alert-danger');
-        statusJudul.innerHTML = "❌ MOHON MAAF, ANDA TIDAK LULUS SELEKSI";
-        statusPesan.innerHTML = `Terima kasih telah berpartisipasi dalam PPDB Online 2026. Mohon maaf, berdasarkan hasil keputusan perangkingan seleksi nilai/zonasi, Anda dinyatakan <strong>TIDAK LULUS</strong>. Tetap semangat!`;
-    } 
-    else if (berkas === "DIVERIFIKASI") {
-        boxStatus.classList.add('alert-info'); // Warna biru info cerah
-        statusJudul.innerHTML = "✅ BERKAS TERVERIFIKASI (MENUNGGU SELEKSI)";
-        statusPesan.innerHTML = `Halo <strong>${res.data.nama_lengkap}</strong>, berkas pendaftaran Anda telah diperiksa dan dinyatakan <strong>VALID / SAH</strong>. Silakan tunggu pengumuman kelulusan final seleksi akademik/zonasi oleh admin.`;
-    } 
-    else if (berkas === "DITOLAK") {
-        boxStatus.classList.add('alert-danger');
-        statusJudul.innerHTML = "❌ BERKAS DITOLAK / TIDAK VALID";
-        statusPesan.innerHTML = `Mohon maaf, berkas pendaftaran yang Anda unggah dinyatakan <strong>TIDAK VALID</strong> oleh panitia. Silakan periksa kembali berkas pendaftaran Anda atau hubungi admin.`;
-    } 
-    else {
-        // Jika status berkas masih "MENUNGGU" dan kelulusan masih "Belum Diseleksi"
-        boxStatus.classList.add('alert-warning');
-        statusJudul.innerHTML = "⏳ BERKAS SEDANG DIVERIFIKASI";
-        statusPesan.innerHTML = `Halo, data pendaftaran Anda telah terekam dengan baik. Saat ini berkas Anda masih berada dalam tahap <strong>Antrean Validasi</strong> oleh panitia PPDB.`;
-    }
-
-} else {
-    // Jika nomor pendaftaran tidak ditemukan
-    boxStatus.className = "alert alert-secondary text-center p-4 mb-0";
-    statusJudul.innerHTML = "🔍 DATA TIDAK DITEMUKAN";
-    statusPesan.innerHTML = `⚠️ ${res.pesan}`;
-    
-    // Kosongkan tabel detail calon siswa
-    document.getElementById('resNo').innerText = "-";
-    document.getElementById('resNama').innerText = "-";
-    document.getElementById('resJalur').innerText = "-";
-    document.getElementById('resJurusan').innerText = "-";
-}
-                })
-            .catch(error => {
-                console.error('Error:', error);
-                btnCek.innerText = "Periksa Kelulusan";
-                btnCek.disabled = false;
-                alert("Terjadi kesalahan koneksi sistem backend saat memeriksa pengumuman!");
-            });
-        });
-    </script>
-</body>
-</html>
+                boxStatus.className =
