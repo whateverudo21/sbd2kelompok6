@@ -138,9 +138,8 @@
                     <li class="nav-item"><a class="nav-link" href="pengumuman.html">Pengumuman</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
                     <li class="nav-item ms-2">
-                       <a href="dashboard.html" class="btn btn-outline-custom px-3 btn-sm rounded-pill text-decoration-none">
-    <i class="fas fa-sign-in-alt me-1"></i> Login
-</a>
+                        <button class="btn btn-outline-primary px-3 btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
                         </button>
                     </li>
                 </ul>
@@ -151,7 +150,7 @@
     <section class="hero-section">
         <div class="container pb-5">
             <h1>Selamat Datang di Portal PPDB</h1>
-            <p class="lead">Penerimaan Peserta Didik Baru (PPDB) SMA & SMK NUSABANGSA 1 Online Tahun Ajaran 2026/2027</p>
+            <p class="lead">Penerimaan Peserta Didik Baru (PPDB) SMA & SMK NUSABANGSA Online Tahun Ajaran 2026/2027</p>
             <a href="dashboard.html" class="btn-daftar-utama">
                 DAFTAR SEKARANG <i class="fas fa-arrow-right ms-2"></i>
             </a>
@@ -221,20 +220,12 @@
                 <div class="modal-body p-4">
                     <form id="formLogin">
                         <div class="mb-3">
-                            <label for="username" class="form-label font-weight-bold">Username / ID Pendaftaran</label>
-                            <input type="text" class="form-control" id="username" placeholder="Contoh: PPDB-siswa123" required>
+                            <label for="username" class="form-label font-weight-bold">Alamat Email Pendaftar</label>
+                            <input type="email" class="form-control" id="username" placeholder="nama@email.com" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" placeholder="Masukkan password Anda" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="role" class="form-label">Masuk Sebagai</label>
-                            <select class="form-select" id="role" required>
-                                <option value="Siswa">Siswa (Cek Status Kelulusan)</option>
-                                <option value="Panitia">Panitia / Admin</option>
-                                <option value="Kepala">Kepala Sekolah</option>
-                            </select>
                         </div>
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" class="btn btn-primary btn-lg fs-6">Masuk Sekarang</button>
@@ -245,7 +236,7 @@
         </div>
     </div>
 
-  <footer id="kontak">
+    <footer id="kontak">
         <div class="container">
             <div class="row align-items-start">
                 <div class="col-md-6 mb-4 mb-md-0">
@@ -277,7 +268,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <a href="https://www.youtube.com/@1DB01kaciwww" target="_blank" class="text-secondary text-decoration-none d-flex align-items-center">
+                            <a href="https://www.youtube.com" target="_blank" class="text-secondary text-decoration-none d-flex align-items-center">
                                 <span class="d-inline-block text-center" style="width: 30px;"><i class="fab fa-youtube text-danger fs-5"></i></span>
                                 <span class="ms-1">YT: Nusabangsa 1 TV</span>
                             </a>
@@ -298,29 +289,49 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-   <script>
-    document.getElementById('formLogin').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const emailIn = document.getElementById('username').value.trim();
-        const passIn = document.getElementById('password').value;
-        const roleIn = document.getElementById('role').value;
+        // Perbaikan: Request otentikasi login asli ke file php di folder api/ Vercel
+        document.getElementById('formLogin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailIn = document.getElementById('username').value.trim();
+            const passIn = document.getElementById('password').value;
 
-        if(emailIn === "" || passIn === "") {
-            alert("Email dan Password tidak boleh kosong!");
-            return;
-        }
+            const btnLogin = this.querySelector('button[type="submit"]');
+            const btnTeksAsli = btnLogin.innerText;
+            btnLogin.innerText = "Memverifikasi...";
+            btnLogin.disabled = true;
 
-        // SIMULASI LOGIN UNTUK VERCEL (Karena Vercel tidak mendukung PHP)
-        alert(`✨ Login Berhasil sebagai ${roleIn}!`);
-        
-        if(roleIn === "Panitia") {
-            window.location.href = "admin.html";
-        } else {
-            // Mengalihkan siswa ke dashboard simulasi
-            window.location.href = `dashboard.html?status=belum&email=${encodeURIComponent(emailIn)}`;
-        }
-    });
-</script>
+            fetch('api/login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailIn, password: passIn })
+            })
+            .then(response => response.json())
+            .then(data => {
+                btnLogin.innerText = btnTeksAsli;
+                btnLogin.disabled = false;
+
+                if (data.status === "sukses") {
+                    // Jika login berhasil, alihkan role secara dinamis ke halaman admin atau formulir
+                    if (data.role === "Admin") {
+                        alert("✨ Login Berhasil! Selamat datang Admin PPDB.");
+                        window.location.href = "admin.html";
+                    } else {
+                        alert("✨ Login Berhasil! Mengalihkan ke Dashboard Pendaftaran.");
+                        // Bawa email pendaftar ke dashboard pendaftaran menggunakan parameter query URL
+                        window.location.href = `dashboard.html?email=${encodeURIComponent(emailIn)}`;
+                    }
+                } else {
+                    alert("⚠️ " + data.pesan);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btnLogin.innerText = btnTeksAsli;
+                btnLogin.disabled = false;
+                alert("Terjadi gangguan sistem saat memproses login!");
+            });
+        });
+    </script>
 </body>
 </html>
