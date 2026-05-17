@@ -328,7 +328,7 @@
         btnSubmit.disabled = true;
 
         // Mengirim data ke register.php
-        fetch('register.php', {
+        fetch('api/register.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: password })
@@ -375,7 +375,7 @@ document.getElementById('formLogin').addEventListener('submit', function(e) {
     btnLogin.disabled = true;
 
     // Kirim data login ke login.php menggunakan Fetch API
-    fetch('login.php', {
+    fetch('api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailIn, password: passIn })
@@ -516,7 +516,7 @@ if (stsBerkas === "DIVERIFIKASI") {
         formData.append('filePembayaran', document.getElementById('filePembayaran').files[0]);
 
         // Mengirimkan data via fetch menuju simpan_pendaftaran.php
-        fetch('simpan_pendaftaran.php', {
+        fetch('api/simpan_pendaftaran.php', {
             method: 'POST',
             body: formData
         })
