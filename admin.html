@@ -37,7 +37,7 @@
                             <th>Jalur</th>
                             <th>Jurusan</th>
                             <th>Status Saat Ini</th>
-                            <th class="text-center" style="width: 220px;">Aksi Verifikasi</th>
+                            <th class="text-center" style="width: 280px;">Aksi Verifikasi</th>
                         </tr>
                     </thead>
                     <tbody id="tabelPendaftar">
@@ -55,7 +55,8 @@
         document.addEventListener("DOMContentLoaded", muatDataSiswa);
 
         function muatDataSiswa() {
-            fetch('get_pendaftar.php')
+            // Perbaikan: Menyesuaikan alamat ke folder api/ sesuai arsitektur Vercel
+            fetch('api/get_pendaftar.php')
             .then(res => res.json())
             .then(res => {
                 const tbody = document.getElementById('tabelPendaftar');
@@ -63,16 +64,28 @@
 
                 if (res.status === "sukses" && res.data.length > 0) {
                     res.data.forEach(siswa => {
-                        let badgeClass = "bg-warning text-dark";
-                        if(siswa.status_verifikasi.toLowerCase().includes('lulus')) badgeClass = "bg-success";
-                        if(siswa.status_verifikasi.toLowerCase().includes('gagal')) badgeClass = "bg-danger";
+                        
+                        // Membuat visualisasi badge status berkas secara dinamis
+                        let badgeBerkas = "bg-warning text-dark";
+                        if(siswa.status_verifikasi === 'DIVERIFIKASI') badgeBerkas = "bg-success";
+                        if(siswa.status_verifikasi === 'DITOLAK') badgeBerkas = "bg-danger";
 
+                        // Membuat visualisasi badge status kelulusan secara dinamis
+                        let badgeLulus = "bg-warning text-dark";
+                        if(siswa.status_kelulusan === 'LULUS') badgeLulus = "bg-success";
+                        if(siswa.status_kelulusan === 'TIDAK LULUS') badgeLulus = "bg-danger";
+
+                        // Perbaikan: Sekarang dipecah seimbang menjadi 6 buah elemen <td> agar pas dengan <th>
                         tbody.innerHTML += `
     <tr>
-        <td>${siswa.nomor_daftar}</td>
+        <td><strong>${siswa.nomor_daftar}</strong></td>
         <td>${siswa.nama_lengkap}</td>
-        <td>${siswa.jalur}</td>
+        <td><span class="badge bg-secondary">${siswa.jalur}</span></td>
         <td>${siswa.jurusan}</td>
+        <td>
+            <div class="mb-1"><small class="text-muted">Berkas:</small> <span class="badge ${badgeBerkas}">${siswa.status_verifikasi}</span></div>
+            <div><small class="text-muted">Seleksi:</small> <span class="badge ${badgeLulus}">${siswa.status_kelulusan || 'MENUNGGU'}</span></div>
+        </td>
         <td>
             <div class="input-group input-group-sm mb-2">
                 <span class="input-group-text bg-light text-muted" style="width: 70px;">Berkas</span>
@@ -100,35 +113,42 @@
                 } else {
                     tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada siswa yang mendaftar di database.</td></tr>`;
                 }
+            })
+            .catch(err => {
+                console.error("Error muat data:", err);
+                document.getElementById('tabelPendaftar').innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat data dari server online!</td></tr>`;
             });
         }
 
-      function gantiStatusSiswa(nomorDaftar, jenisAksi) {
-    // Mengambil value dropdown berdasarkan tombol mana yang diklik
-    const statusBaru = jenisAksi === 'berkas' 
-        ? document.getElementById(`berkas-${nomorDaftar}`).value 
-        : document.getElementById(`lulus-${nomorDaftar}`).value;
+        function gantiStatusSiswa(nomorDaftar, jenisAksi) {
+            const statusBaru = jenisAksi === 'berkas' 
+                ? document.getElementById(`berkas-${nomorDaftar}`).value 
+                : document.getElementById(`lulus-${nomorDaftar}`).value;
 
-    fetch('update_status.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            nomor_daftar: nomorDaftar, 
-            status: statusBaru,
-            jenis: jenisAksi // Mengirim penanda: 'berkas' atau 'kelulusan'
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status === "sukses") {
-            alert(data.pesan);
-            muatDataSiswa(); // Refresh data tabel biar sinkron
-        } else {
-            alert("Gagal memperbarui status: " + data.pesan);
+            // Perbaikan: Menyesuaikan alamat ke folder api/ sesuai arsitektur Vercel
+            fetch('api/update_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    nomor_daftar: nomorDaftar, 
+                    status: statusBaru,
+                    jenis: jenisAksi
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "sukses") {
+                    alert("✨ " + data.pesan);
+                    muatDataSiswa(); // Refresh data tabel agar status terbaru langsung sinkron
+                } else {
+                    alert("⚠️ Gagal memperbarui status: " + data.pesan);
+                }
+            })
+            .catch(err => {
+                console.error("Error update status:", err);
+                alert("Terjadi gangguan koneksi ke server!");
+            });
         }
-    })
-    .catch(err => console.error("Error:", err));
-}
     </script>
 </body>
 </html>
