@@ -14,58 +14,58 @@
         .step-active { background-color: #0d6efd; }
         .step-success { background-color: #198754; }
 
-      .navbar {
-            background-color: #212529 !important; /* Ini yang bikin background navbarnya jadi hitam */
+        .navbar {
+            background-color: #212529 !important; /* Membuat background navbar menjadi hitam */
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
         .navbar-brand {
             font-weight: 700;
-            color: #ffffff !important; /* Teks logo jadi putih biar kelihatan di latar hitam */
+            color: #ffffff !important; /* Teks logo jadi putih agar kontras */
         }
         
         /* Menu Navbar berbentuk Pill */
         .nav-link {
             font-weight: 500;
-            color: #adb5bd !important; /* Teks menu jadi abu-abu terang */
+            color: #adb5bd !important; /* Teks menu abu-abu terang */
             padding: 8px 18px !important;
             border-radius: 25px;
             margin: 0 4px;
             transition: all 0.3s;
         }
         .nav-link:hover {
-            color: #ffffff !important; /* Teks jadi putih pas disentuh mouse */
-            background-color: rgba(255, 255, 255, 0.1); /* Background samar pas disentuh mouse */
+            color: #ffffff !important; /* Teks jadi putih saat di-hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Background samar saat di-hover */
         }
 
-@media print {
-    /* Sembunyikan semua elemen yang tidak perlu dicetak */
-    nav, .col-md-4, .btn, hr, .text-muted, h6 {
-        display: none !important;
-    }
-    /* Atur agar area konten sukses memenuhi halaman */
-    body {
-        background-color: #fff !important;
-    }
-    .col-md-8 {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .card {
-        border: none !important;
-        box-shadow: none !important;
-    }
-    .card-header {
-        background-color: #198754 !important;
-        color: white !important;
-        text-align: center;
-    }
-}
+        @media print {
+            /* Sembunyikan elemen yang tidak perlu dicetak */
+            nav, .col-md-4, .btn, hr, .text-muted, h6 {
+                display: none !important;
+            }
+            /* Atur area konten sukses memenuhi halaman cetak */
+            body {
+                background-color: #fff !important;
+            }
+            .col-md-8 {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .card {
+                border: none !important;
+                box-shadow: none !important;
+            }
+            .card-header {
+                background-color: #198754 !important;
+                color: white !important;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 
- <nav class="navbar navbar-expand-lg sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 PPDB ONLINE SMK & SMA NUSABANGSA 2026
@@ -75,15 +75,14 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Pendaftaran</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">Pendaftaran</a></li>
                     <li class="nav-item"><a class="nav-link" href="pengumuman.html">Pengumuman</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.html#kontak">Kontak</a></li>
                     <li class="nav-item ms-2">
                        <button class="btn btn-outline-primary px-3 btn-sm rounded-pill" onclick="pindahPanel('panel-login')">
-                       <i class="fas fa-sign-in-alt me-1"></i> Login
-                
-                        </button>
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                       </button>
                     </li>
                 </ul>
             </div>
@@ -167,7 +166,7 @@
                 </div>
 
                 <div class="card border-warning" id="box-cetak" style="display: none;">
-                    <div class="card-header bg-warning text-dark font-weight-bold">🖨️ Cetak Dokumen</div>
+                    <div class="card-header bg-warning text-dark font-weight-bold">Cetak Dokumen</div>
                     <div class="card-body text-center">
                         <p class="small text-muted">Formulir Anda sudah lengkap! Silakan cetak bukti pendaftaran Anda di bawah ini.</p>
                         <button class="btn btn-warning w-100 fw-bold mb-2" onclick="aksiCetak()">Cetak Bukti Pendaftaran</button>
@@ -241,7 +240,7 @@
                                 </div>
 
                                 <div class="mb-4 p-3 bg-light border border-info rounded">
-                                    <h6 class="text-info fw-bold mb-2">💳 Pembayaran Pendaftaran (Rp 150.000)</h6>
+                                    <h6 class="text-info fw-bold mb-2">Pembayaran Pendaftaran (Rp 150.000)</h6>
                                     <p class="small text-muted mb-2">Silakan klik tombol di bawah untuk mendapatkan Nomor Virtual Account (VA).</p>
                                     
                                     <button type="button" class="btn btn-sm btn-info text-white mb-3" id="btnGenerateVA" onclick="generateVA()">
@@ -281,11 +280,10 @@
                                     <tr><td style="width: 140px;">Nomor Daftar</td><td>: <strong id="view-id" class="text-danger"></strong></td></tr>
                                     <tr><td>Jalur Pilih</td><td>: <span id="view-jalur"></span></td></tr>
                                     <tr><td>Jurusan</td><td>: <span id="view-jurusan"></span></td></tr>
-                                   <tr>
-                                   <tr>
-    <td>Status Berkas</td>
-    <td>: <span id="view-status-berkas" class="badge bg-warning text-dark">Menunggu Seleksi / Verifikasi</span></td>
-</tr>
+                                    <tr>
+                                        <td>Status Berkas</td>
+                                        <td>: <span id="view-status-berkas" class="badge bg-warning text-dark">Menunggu Seleksi / Verifikasi</span></td>
+                                    </tr>
                                 </table>
                             </div>
                             <p class="text-muted">Langkah selanjutnya adalah mengunduh bukti pendaftaran pada tombol kuning di panel sebelah kiri Anda.</p>
@@ -293,7 +291,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -312,22 +309,18 @@
         document.getElementById(idPanel).style.display = 'block';
     }
 
-    // ALUR 1: Proses Submit Pendaftaran Akun Baru
-    // ALUR 1: PROSES REGISTER KE DATABASE
+    // ALUR 1: PROSES REGISTER KE DATABASE ONLINE
     document.getElementById('formRegister').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Ambil isi inputan
         const email = document.getElementById('regEmail').value;
         const password = document.getElementById('regPassword').value;
         
-        // Ubah teks tombol jadi loading biar interaktif
         const btnSubmit = this.querySelector('button[type="submit"]');
         const btnTeksAsli = btnSubmit.innerText;
         btnSubmit.innerText = "Mendaftarkan...";
         btnSubmit.disabled = true;
 
-        // Mengirim data ke register.php
         fetch('api/register.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -339,16 +332,12 @@
             btnSubmit.disabled = false;
 
             if(data.status === "sukses") {
-                // Simpan di variabel lokal sementara untuk login otomatis di page ini
                 dataAkun = { email: email, password: password }; 
-                
-                // Pindah panel dan tampilkan pesan sukses dari database
                 pindahPanel('panel-login');
                 const alertSukses = document.getElementById('alert-reg-sukses');
                 alertSukses.style.display = 'block';
                 alertSukses.innerText = data.pesan;
             } else {
-                // Muncul alert kalau email sudah terdaftar
                 alert("⚠️ " + data.pesan);
             }
         })
@@ -360,147 +349,125 @@
         });
     });
 
- // ========================================================
-// ALUR 2: SINKRONISASI LOGIN NAVBAR KE DATABASE & ROLE ADMIN
-// ========================================================
-document.getElementById('formLogin').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const emailIn = document.getElementById('loginEmail').value.trim();
-    const passIn = document.getElementById('loginPassword').value;
+    // ALUR 2: SINKRONISASI LOGIN NAVBAR KE DATABASE & ROLE ADMIN
+    document.getElementById('formLogin').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const emailIn = document.getElementById('loginEmail').value.trim();
+        const passIn = document.getElementById('loginPassword').value;
 
-    const btnLogin = this.querySelector('button[type="submit"]');
-    const btnTeksAsli = btnLogin.innerText;
-    btnLogin.innerText = "Memverifikasi...";
-    btnLogin.disabled = true;
+        const btnLogin = this.querySelector('button[type="submit"]');
+        const btnTeksAsli = btnLogin.innerText;
+        btnLogin.innerText = "Memverifikasi...";
+        btnLogin.disabled = true;
 
-    // Kirim data login ke login.php menggunakan Fetch API
-    fetch('api/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: emailIn, password: passIn })
-    })
-    .then(response => response.json())
-    .then(data => {
-        btnLogin.innerText = btnTeksAsli;
-        btnLogin.disabled = false;
+        fetch('api/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: emailIn, password: passIn })
+        })
+        .then(response => response.json())
+        .then(data => {
+            btnLogin.innerText = btnTeksAsli;
+            btnLogin.disabled = false;
 
-        if(data.status === "sukses") {
-            // JIKA YANG LOGIN ADALAH ADMIN
-            if(data.role === "Admin") {
-                alert("✨ Login Berhasil! Selamat datang Admin PPDB.");
-                window.location.href = "admin.html"; // Alihkan langsung ke dashboard admin
-                return;
+            if(data.status === "sukses") {
+                if(data.role === "Admin") {
+                    alert("Login Berhasil! Selamat datang Admin PPDB.");
+                    window.location.href = "admin.html";
+                    return;
+                }
+
+                alert("Login Berhasil! Mengalihkan ke Dashboard Pendaftaran.");
+                document.getElementById('user-aktif').innerText = data.email;
+                
+                document.getElementById('panel-login').style.display = 'none';
+                document.getElementById('panel-dashboard').style.display = 'block';
+
+                if (data.sudah_daftar === true && data.data_daftar !== null) {
+                    dataPendaftar = {
+                        id: data.data_daftar.nomor_daftar,
+                        nama: data.data_daftar.nama_lengkap,
+                        jalur: data.data_daftar.jalur,
+                        jurusan: data.data_daftar.jurusan,
+                        status_verifikasi: data.data_daftar.status_verifikasi
+                    };
+
+                    document.getElementById('view-nama').innerText = dataPendaftar.nama;
+                    document.getElementById('view-id').innerText = dataPendaftar.id;
+                    document.getElementById('view-jalur').innerText = dataPendaftar.jalur;
+                    document.getElementById('view-jurusan').innerText = dataPendaftar.jurusan;
+
+                    const stsBerkas = data.data_daftar.status_verifikasi; 
+                    const badgeStatusTabel = document.getElementById('view-status-berkas');
+                    const step3Ico = document.getElementById('step3-ico');
+
+                    if (stsBerkas === "DIVERIFIKASI") {
+                        if(badgeStatusTabel) {
+                            badgeStatusTabel.className = "badge bg-success";
+                            badgeStatusTabel.innerText = "Berkas Diverifikasi (Valid)";
+                        }
+                        if(step3Ico) {
+                            step3Ico.className = "step-badge step-success";
+                            step3Ico.innerText = "✓";
+                        }
+                    } else if (stsBerkas === "DITOLAK") {
+                        if(badgeStatusTabel) {
+                            badgeStatusTabel.className = "badge bg-danger";
+                            badgeStatusTabel.innerText = "Berkas Ditolak / Tidak Sah";
+                        }
+                        if(step3Ico) {
+                            step3Ico.className = "step-badge bg-danger";
+                            step3Ico.innerText = "✕";
+                        }
+                    } else {
+                        if(badgeStatusTabel) {
+                            badgeStatusTabel.className = "badge bg-warning text-dark";
+                            badgeStatusTabel.innerText = "Menunggu Verifikasi Berkas";
+                        }
+                        if(step3Ico) {
+                            step3Ico.className = "step-badge step-active";
+                            step3Ico.innerText = "3";
+                        }
+                    }
+                    
+                    document.getElementById('step2-ico').className = "step-badge step-success";
+                    document.getElementById('step2-ico').innerText = "✓";
+
+                    document.getElementById('konten-formulir').style.display = 'none';
+                    document.getElementById('konten-sukses').style.display = 'block';
+                    document.getElementById('box-cetak').style.display = 'block';
+                    
+                } else {
+                    document.getElementById('step2-ico').className = "step-badge step-active";
+                    document.getElementById('konten-formulir').style.display = 'block';
+                    document.getElementById('konten-sukses').style.display = 'none';
+                    document.getElementById('box-cetak').style.display = 'none';
+                }
+            } else {
+                alert("⚠️ " + data.pesan);
             }
-
-            // JIKA YANG LOGIN ADALAH SISWA BIASA
-            alert("✨ Login Berhasil! Mengalihkan ke Dashboard Pendaftaran.");
-            document.getElementById('user-aktif').innerText = data.email;
-            
-            // Sembunyikan panel login, tampilkan panel dashboard utama
-            document.getElementById('panel-login').style.display = 'none';
-            document.getElementById('panel-dashboard').style.display = 'block';
-
-            // Cek: Apakah siswa ini sudah pernah mengisi form pendaftaran sebelumnya?
-           // Cek: Apakah siswa ini sudah pernah mengisi form pendaftaran sebelumnya?
-if (data.sudah_daftar === true && data.data_daftar !== null) 
-{
-    dataPendaftar = {
-        id: data.data_daftar.nomor_daftar,
-        nama: data.data_daftar.nama_lengkap,
-        jalur: data.data_daftar.jalur,
-        jurusan: data.data_daftar.jurusan,
-        status_verifikasi: data.data_daftar.status_verifikasi // Pastikan login.php mengirimkan field ini
-    };
-
-    // Isi ringkasan bukti pendaftaran bawaan halaman
-    document.getElementById('view-nama').innerText = dataPendaftar.nama;
-    document.getElementById('view-id').innerText = dataPendaftar.id;
-    document.getElementById('view-jalur').innerText = dataPendaftar.jalur;
-    document.getElementById('view-jurusan').innerText = dataPendaftar.jurusan;
-
-    // Ambil elemen status di tabel ringkasan & badge alur kiri
-   // Ambil status khusus BERKAS
-const stsBerkas = data.data_daftar.status_verifikasi; 
-const badgeStatusTabel = document.getElementById('view-status-berkas');
-const step3Ico = document.getElementById('step3-ico');
-
-if (stsBerkas === "DIVERIFIKASI") {
-    if(badgeStatusTabel) {
-        badgeStatusTabel.className = "badge bg-success";
-        badgeStatusTabel.innerText = "Berkas Diverifikasi (Valid)";
-    }
-    if(step3Ico) {
-        step3Ico.className = "step-badge step-success";
-        step3Ico.innerText = "✓";
-    }
-} else if (stsBerkas === "DITOLAK") {
-    if(badgeStatusTabel) {
-        badgeStatusTabel.className = "badge bg-danger";
-        badgeStatusTabel.innerText = "Berkas Ditolak / Tidak Sah";
-    }
-    if(step3Ico) {
-        step3Ico.className = "step-badge bg-danger";
-        step3Ico.innerText = "✕";
-    }
-} else {
-    if(badgeStatusTabel) {
-        badgeStatusTabel.className = "badge bg-warning text-dark";
-        badgeStatusTabel.innerText = "Menunggu Verifikasi Berkas";
-    }
-    if(step3Ico) {
-        step3Ico.className = "step-badge step-active";
-        step3Ico.innerText = "3";
-    }
-}
-    // Ubah status badge indikator alur nomor 2 di kiri menjadi sukses (Centang) karena data form sudah masuk
-    document.getElementById('step2-ico').className = "step-badge step-success";
-    document.getElementById('step2-ico').innerText = "✓";
-
-    // Langsung kunci halaman: sembunyikan form isi data, tampilkan ringkasan sukses
-    document.getElementById('konten-formulir').style.display = 'none';
-    document.getElementById('konten-sukses').style.display = 'block';
-    document.getElementById('box-cetak').style.display = 'block';
-    
-} else {
-                // Jika belum pernah isi form, arahkan untuk mengisi biodata (Step 2 aktif)
-                document.getElementById('step2-ico').className = "step-badge step-active";
-                document.getElementById('konten-formulir').style.display = 'block';
-                document.getElementById('konten-sukses').style.display = 'none';
-                document.getElementById('box-cetak').style.display = 'none';
-            }
-        } else {
-            // Jika password salah atau email tidak terdaftar
-            alert("⚠️ " + data.pesan);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        btnLogin.innerText = btnTeksAsli;
-        btnLogin.disabled = false;
-        alert("Terjadi gangguan sistem saat memproses login!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btnLogin.innerText = btnTeksAsli;
+            btnLogin.disabled = false;
+            alert("Terjadi gangguan sistem saat memproses login!");
+        });
     });
-});
 
-    // ========================================================
-    // ALUR 3 & 4: KIRIM FORMULIR BERKAS KE DB (DIPERBARUI)
-    // ========================================================
+    // ALUR 3 & 4: KIRIM FORMULIR BERKAS KE DATABASE
     document.getElementById('formIsiData').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Ubah teks tombol menjadi loading saat mengirim data
         const btnSubmit = this.querySelector('button[type="submit"]');
         const btnTeksAsli = btnSubmit.innerText;
         btnSubmit.innerText = "Menyimpan & Mengunggah Berkas...";
         btnSubmit.disabled = true;
 
-        // Ambil email user yang sedang login aktif dari sidebar badge
         const emailAktif = document.getElementById('user-aktif').innerText;
-
-        // Menggunakan FormData karena formulir melibatkan upload berkas file fisik
         const formData = new FormData();
         
-        // Memasukkan data teks
         formData.append('emailActive', emailAktif);
         formData.append('namaLengkap', document.getElementById('namaLengkap').value);
         formData.append('tempatLahir', document.getElementById('tempatLahir').value);
@@ -509,13 +476,11 @@ if (stsBerkas === "DIVERIFIKASI") {
         formData.append('jalurDaftar', document.getElementById('jalurDaftar').value);
         formData.append('jurusan', document.querySelector('input[name="jurusan"]:checked').value);
         
-        // Memasukkan berkas file fisik
         formData.append('fileIjazah', document.getElementById('fileIjazah').files[0]);
         formData.append('fileKK', document.getElementById('fileKK').files[0]);
         formData.append('fileAK', document.getElementById('fileAK').files[0]);
         formData.append('filePembayaran', document.getElementById('filePembayaran').files[0]);
 
-        // Mengirimkan data via fetch menuju simpan_pendaftaran.php
         fetch('api/simpan_pendaftaran.php', {
             method: 'POST',
             body: formData
@@ -533,18 +498,15 @@ if (stsBerkas === "DIVERIFIKASI") {
                     jurusan: res.data.jurusan
                 };
 
-                // Update isi teks visual ringkasan data sukses halaman
                 document.getElementById('view-nama').innerText = dataPendaftar.nama;
                 document.getElementById('view-id').innerText = dataPendaftar.id;
                 document.getElementById('view-jalur').innerText = dataPendaftar.jalur;
                 document.getElementById('view-jurusan').innerText = dataPendaftar.jurusan;
 
-                // Ubah status indikator langkah pendaftaran di sebelah kiri
                 document.getElementById('step2-ico').className = "step-badge step-success";
                 document.getElementById('step2-ico').innerText = "✓";
                 document.getElementById('step3-ico').className = "step-badge step-active";
 
-                // Pindah panel form ke info sukses
                 document.getElementById('konten-formulir').style.display = 'none';
                 document.getElementById('konten-sukses').style.display = 'block';
                 document.getElementById('box-cetak').style.display = 'block';
@@ -560,86 +522,65 @@ if (stsBerkas === "DIVERIFIKASI") {
         });
     });
 
-    
-    // ALUR 5: Aksi Tombol Cetak Bukti Pendaftaran
+    // ALUR 5: AKSI TOMBOL CETAK BUKTI
     function aksiCetak() {
-    // 1. Validasi data pendaftar
-    if (!dataPendaftar.id) {
-        alert("Data pendaftaran tidak ditemukan!");
-        return;
-    }
-
-    // 2. Ambil elemen HTML ringkasan sukses yang mau dijadikan PDF
-    // Kita buat clone elemennya supaya tombol "Keluar / Logout" tidak ikut terdownload
-    const elemenAsli = document.getElementById('konten-sukses').querySelector('.card');
-    const elemenClone = elemenAsli.cloneNode(true);
-    
-    // Hapus tombol logout yang ada di dalam berkas klon agar PDF-nya bersih
-    const tombolLogout = elemenClone.querySelector('button');
-    if(tombolLogout) tombolLogout.remove();
-
-    // 3. Atur konfigurasi file PDF-nya
-    const opsi = {
-        margin:       10,
-        filename:     'Bukti_Pendaftaran_' + dataPendaftar.id + '.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 }, // Bikin teksnya tajam dan gak pecah
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // 4. Proses konversi HTML ke PDF dan langsung otomatis download
-    html2pdf().set(opsi).from(elemenClone).save().then(() => {
-        // 5. Setelah berhasil download, selesaikan indikator alur di panel kiri
-        document.getElementById('step3-ico').className = "step-badge step-success";
-        document.getElementById('step3-ico').innerText = "✓";
-    });
-}
-
-// Fungsi untuk Generate Virtual Account (VA)
-    function generateVA() {
-        // 1. Ambil nilai No. HP dari form Biodata Diri di atas
-        const noHp = document.getElementById('noHP').value;
-
-        // 2. Cek apakah No. HP kosong
-        if (noHp.trim() === "") {
-            alert("Silakan isi 'No. WhatsApp Aktif' di bagian 1 (Biodata Diri) terlebih dahulu untuk membuat VA!");
-            document.getElementById('noHP').focus(); // Otomatis mengarahkan kursor ke input No HP
-            return; // Menghentikan proses ke bawah kalau kosong
+        if (!dataPendaftar.id) {
+            alert("Data pendaftaran tidak ditemukan!");
+            return;
         }
 
-        // 3. Bersihkan No HP dari karakter selain angka (misal ada yang ngetik pakai spasi/strip)
-        const cleanNoHp = noHp.replace(/\D/g, '');
+        const elemenAsli = document.getElementById('konten-sukses').querySelector('.card');
+        const elemenClone = elemenAsli.cloneNode(true);
+        
+        const tombolLogout = elemenClone.querySelector('button');
+        if(tombolLogout) tombolLogout.remove();
 
-        // 4. Buat Nomor VA (Kode Bank 8806 + Nomor HP Pendaftar)
+        const opsi = {
+            margin:       10,
+            filename:     'Bukti_Pendaftaran_' + dataPendaftar.id + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opsi).from(elemenClone).save().then(() => {
+            document.getElementById('step3-ico').className = "step-badge step-success";
+            document.getElementById('step3-ico').innerText = "✓";
+        });
+    }
+
+    // GENERATE VIRTUAL ACCOUNT
+    function generateVA() {
+        const noHp = document.getElementById('noHP').value;
+
+        if (noHp.trim() === "") {
+            alert("Silakan isi 'No. WhatsApp Aktif' di bagian 1 (Biodata Diri) terlebih dahulu untuk membuat VA!");
+            document.getElementById('noHP').focus();
+            return;
+        }
+
+        const cleanNoHp = noHp.replace(/\D/g, '');
         const kodeBank = "8806";
         const vaNum = kodeBank + cleanNoHp;
 
-        // 5. Tampilkan ke layar
         document.getElementById('vaNumber').innerText = vaNum;
         document.getElementById('vaContainer').style.display = 'block';
         document.getElementById('btnGenerateVA').style.display = 'none';
     }
 
-    // Fungsi Logout Skenario 2: Reset tampilan panel ke Login
-function logout() {
-    if (confirm("Apakah Anda yakin ingin keluar?")) {
-        // Kosongkan data lokal sementara
-        dataAkun = {};
-        dataPendaftar = {};
+    // LOGOUT RESET PANEL
+    function logout() {
+        if (confirm("Apakah Anda yakin ingin keluar?")) {
+            dataAkun = {};
+            dataPendaftar = {};
 
-        // Sembunyikan dashboard, tampilkan panel login
-        document.getElementById('panel-dashboard').style.display = 'none';
-        document.getElementById('panel-login').style.display = 'block';
-
-        // Reset form login biar bersih kembali
-        document.getElementById('formLogin').reset();
-        
-        // Sembunyikan alert sukses registrasi lama jika ada
-        document.getElementById('alert-reg-sukses').style.display = 'none';
+            document.getElementById('panel-dashboard').style.display = 'none';
+            document.getElementById('panel-login').style.display = 'block';
+            document.getElementById('formLogin').reset();
+            document.getElementById('alert-reg-sukses').style.display = 'none';
+        }
     }
-}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-</body>
 </body>
 </html>
